@@ -399,14 +399,19 @@
               <FilePath>.\Sources\MyTimer.c</FilePath>
             </File>
             <File>
-              <FileName>contole_voilier.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\contole_voilier.c</FilePath>
-            </File>
-            <File>
               <FileName>main.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\main.c</FilePath>
+            </File>
+            <File>
+              <FileName>controle_moteur_plateau.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\controle_moteur_plateau.c</FilePath>
+            </File>
+            <File>
+              <FileName>controle_servo_moteur.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\controle_servo_moteur.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -429,9 +434,14 @@
               <FilePath>.\Include\MyADC.h</FilePath>
             </File>
             <File>
-              <FileName>controle_voilier.h</FileName>
+              <FileName>controle_moteur_plateau.h</FileName>
               <FileType>5</FileType>
-              <FilePath>.\controle_voilier.h</FilePath>
+              <FilePath>.\controle_moteur_plateau.h</FilePath>
+            </File>
+            <File>
+              <FileName>controle_servo_moteur.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\controle_servo_moteur.h</FilePath>
             </File>
           </Files>
         </Group>
@@ -836,14 +846,19 @@
               <FilePath>.\Sources\MyTimer.c</FilePath>
             </File>
             <File>
-              <FileName>contole_voilier.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\contole_voilier.c</FilePath>
-            </File>
-            <File>
               <FileName>main.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\main.c</FilePath>
+            </File>
+            <File>
+              <FileName>controle_moteur_plateau.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\controle_moteur_plateau.c</FilePath>
+            </File>
+            <File>
+              <FileName>controle_servo_moteur.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\controle_servo_moteur.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -866,9 +881,14 @@
               <FilePath>.\Include\MyADC.h</FilePath>
             </File>
             <File>
-              <FileName>controle_voilier.h</FileName>
+              <FileName>controle_moteur_plateau.h</FileName>
               <FileType>5</FileType>
-              <FilePath>.\controle_voilier.h</FilePath>
+              <FilePath>.\controle_moteur_plateau.h</FilePath>
+            </File>
+            <File>
+              <FileName>controle_servo_moteur.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\controle_servo_moteur.h</FilePath>
             </File>
           </Files>
         </Group>
