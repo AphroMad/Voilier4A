@@ -51,7 +51,7 @@ struct USART {
 void USART_Init(struct USART *config);
 void USART_Start(struct USART *config);
 void USART_Send(struct USART *config, uint8_t *msg, uint32_t len);
-void USART_Attach_Receive_Interrupt(struct USART *config, void (*function) (void), uint8_t priority);
+void USART_Attach_Receive_Interrupt(struct USART *config, void (*function) (uint8_t), uint8_t priority);
 
 
 #endif // USART_H

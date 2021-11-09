@@ -1,11 +1,11 @@
 #include <USART.h>
 
 
-void USART_DefaultHandler(void) {}
+void USART_DefaultHandler(uint8_t data) {}
 
-void (*USART1_Handler) (void) = USART_DefaultHandler;
-void (*USART2_Handler) (void) = USART_DefaultHandler;
-void (*USART3_Handler) (void) = USART_DefaultHandler;
+void (*USART1_Handler) (uint8_t data) = USART_DefaultHandler;
+void (*USART2_Handler) (uint8_t data) = USART_DefaultHandler;
+void (*USART3_Handler) (uint8_t data) = USART_DefaultHandler;
 
 void USART_Init(struct USART *usart) {
 	switch ((int) usart->usart) {
@@ -35,17 +35,17 @@ void USART_Init(struct USART *usart) {
 	usart->gpio_tx.mode = GPIO_MODE_OUT_ALT_PUSH_PULL;
 	usart->gpio_rx.mode = GPIO_MODE_IN_FLOATING;
 	
-	if (BIT_CHECK(usart->direction, USART_DIRECTION_RX)) {
+	if (BITMASK_CHECK_ALL(usart->direction, USART_DIRECTION_RX)) {
 		GPIO_Init(&usart->gpio_rx);
 	}
-	if (BIT_CHECK(usart->direction, USART_DIRECTION_TX)) {
+	if (BITMASK_CHECK_ALL(usart->direction, USART_DIRECTION_TX)) {
 		GPIO_Init(&usart->gpio_tx);
 	}
 	
+	BITMASK_SET(usart->usart->CR1, USART_CR1_UE);
 	BITMASK_SETV(usart->usart->CR1, USART_CR1_M, usart->word_lenght);
 	BITMASK_SETV(usart->usart->CR1, USART_CR1_PCE, usart->parity_control);
 	BITMASK_SETV(usart->usart->CR1, USART_CR1_PS, usart->parity_selection);
-	BITMASK_SETV(usart->usart->CR1, USART_CR1_TE | USART_CR1_RE, usart->direction);
 	BITMASK_SETV(usart->usart->CR2, USART_CR2_STOP, usart->stop);
 	
 	uint32_t base_frequ = 0;
@@ -66,18 +66,20 @@ void USART_Init(struct USART *usart) {
 }
 
 void USART_Start(struct USART *usart) {
-	BITMASK_SET(usart->usart->CR1, USART_CR1_UE);
+	BITMASK_SETV(usart->usart->CR1, USART_CR1_TE | USART_CR1_RE, usart->direction);
 }
 
 
 void USART_Send(struct USART *usart, uint8_t *msg, uint32_t len) {
 	for(uint32_t i = 0; i < len; i++){
-		BITMASK_SETV(usart->usart->DR, USART_DR_DR, msg[i]);
+		int a = usart->usart->SR & USART_SR_TXE;
 		while(!BITMASK_CHECK_ALL(usart->usart->SR, USART_SR_TXE));
+		int b = usart->usart->SR & USART_SR_TXE;
+		BITMASK_SETV(usart->usart->DR, USART_DR_DR, msg[i]);
 	}
 }
 
-void USART_Attach_Receive_Interrupt(struct USART *usart, void (*function) (void), uint8_t priority) {
+void USART_Attach_Receive_Interrupt(struct USART *usart, void (*function) (uint8_t), uint8_t priority) {
 	switch ((int) usart->usart) {
 		case (int) USART1:
 			NVIC_EnableIRQ(USART1_IRQn);
@@ -99,12 +101,16 @@ void USART_Attach_Receive_Interrupt(struct USART *usart, void (*function) (void)
 }
 
 void USART1_IRQHandler(void) {
-	int i = 0;
-	i += 1;
+	USART1_Handler(USART1->DR);
+	BITMASK_CLEAR(USART1->SR, USART_SR_RXNE);
 }
 
 void USART2_IRQHandler(void) {
+	USART2_Handler(USART2->DR);
+	BITMASK_CLEAR(USART2->SR, USART_SR_RXNE);
 }
 
 void USART3_IRQHandler(void) {
+	USART3_Handler(USART2->DR);
+	BITMASK_CLEAR(USART2->SR, USART_SR_RXNE);
 }

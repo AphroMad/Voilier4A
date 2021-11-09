@@ -14,8 +14,8 @@ struct MoteurRotation moteur_rotation = {
 	.pwm_vitesse = {
 		.gpio.gpio = GPIOA,
 		.gpio.pin = 1,
-		.timer.psc = 0,
-		.timer.arr = 1799,
+		.timer.psc = 1,
+		.timer.arr = 1000,
 	}
 };
 
@@ -57,26 +57,30 @@ struct USART usart = {
 	.bauds = 9600,
 };
 
+void usart_receive(uint8_t data) {
+	MoteurRotation_Set(&moteur_rotation, 1, data);
+}
+
 void setup(void) {
+	USART_Init(&usart);
 	MoteurRotation_Init(&moteur_rotation);
 	Servo_Init(&servo_moteur);
 	Encoder_Init(&girouette);
-	ADC_Init();
-	ADC_Pin_Init(ADC_PA4);
-	// I2C_Init();
-	USART_Init(&usart);
-}	
+}
 
 void start(void) {
+	USART_Start(&usart);
+	USART_Attach_Receive_Interrupt(&usart, usart_receive, 8);
 	MoteurRotation_Start(&moteur_rotation);
 	Servo_Start(&servo_moteur);
 	Encoder_Start(&girouette);
-	USART_Start(&usart);
 }
 
 int main(void) {
 	setup();
 	start();
-	while(1) {
-	}
+	
+	MoteurRotation_Set(&moteur_rotation, 1, 50);
+	Servo_Set(&servo_moteur, 180);
+	while(1) {}
 }
